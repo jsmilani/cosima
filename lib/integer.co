@@ -1,0 +1,65 @@
+_integer() = {
+  times() = {
+    position = 0
+    while position < self
+      yield
+      position += 1
+    end
+  }
+  
+  to_s() = {
+    string = ""
+    divmod = self.divmod(:divisor = 10)
+    while div > 0
+      string.append(:char = Char(48 + divmod.mod))
+      divmod = self.divmod(divmod.quotient)
+    end
+    return string
+  }
+  
+  divmod(divisor = :Int) = {
+    # assembly
+    # modulo = 
+    # quotient = 
+  }
+  
+  seconds() = {
+    return Duration(:seconds = self)
+  }
+  second() @= seconds()
+  
+  minutes() = {
+    return Duration(:minutes = self)
+  }
+  minute() @= minutes()
+  
+  hours() = {
+    return Duration(:hours = self)
+  }
+  hour() @= hours()
+  
+  days() @= {
+    return Duration(:days = self)
+  }
+  day() @= days()
+  
+  weeks() = {
+    return Duration(:weeks = self)
+  }
+  week() @= weeks()
+  
+  months() = {
+    return Duration(:months = self)
+  }
+  months() @= month()
+  
+  years() = {
+    return Duration(:years = self)
+  }
+  year() @= year()
+}
+
+Int() &= _integer()
+UInt() &= _integer()
+Long() &= _integer()
+ULong() &= _integer()

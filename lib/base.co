@@ -1,0 +1,30 @@
+# Base Types
+# Bool,Char,Int,Long,Float,Double,Context,Pointer,Type
+# UInt,ULong
+
+# Int.size - sizeof(Int)
+# Int() - return typecasted to integer
+
+# Pointer(size = 0) - allocates an array of memory
+
+Pointer &= {
+  free() = {
+    # assembly
+  }
+  
+  at(index = :UInt) = {
+    
+  }
+  
+  set(index = :UInt, value = 0) = {
+    # assembly
+  }
+  
+  copy(destination = :Pointer, size = :UInt, offset = 0) = {
+    # assembly
+  }
+  
+  pointer(offset = 0) = {
+    # assembly
+  }
+}

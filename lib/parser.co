@@ -1,0 +1,26 @@
+Parser(definition = :String) = {
+  
+  
+  
+  
+  Capture(string = :String) = {
+    
+  }
+
+  
+  parse(string = :String) = {
+    return
+  }
+}
+
+:Parser.Capture
+
+
+Parser(<<LANGUAGE
+context=^\s*{{ref}}+\(\)\s*=\s*{\s*})
+ref=[A-Z_]+
+LANGUAGE).parse(<<STRING
+Test() = {
+  
+}
+STRING)

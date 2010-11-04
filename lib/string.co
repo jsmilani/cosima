@@ -1,0 +1,63 @@
+String(size = UInt(0), data = nil) @= Array(:size = size, :type = Char, :data = data)
+
+String() &= {
+  scan(pattern = :string) = {
+    matching = false
+    pattern_position = 0
+    each() do |element|
+      if element.value == pattern.at(pattern_position)
+        matching = true
+        pattern_position += 1
+        if pattern_position == pattern.size
+          yield
+          matching = false
+          pattern_position = 0
+        end
+      elsif matching
+        matching = false
+        pattern_position = 0
+      end
+    end
+    
+    before() = {
+      return sub(:length = element.position - 1)
+    }
+    
+    after() = {
+      return sub(:start = scanner.position, :length = size - scanner.position)
+    }
+  }
+  
+  gsub(pattern = :string, replacement = :string) = {
+    result = String()
+    scan(pattern) do |scanner|
+      result
+    end
+  }
+  
+  split(delimitter = ' ') = {
+    
+  }
+  
+  hash() = {
+    return 
+  }
+  
+  print() = {
+    
+  }
+  
+  sub(start = 0, length = size) = {
+    # ? lenth > size - start
+    return SubString(:size = length, :type = type, :data = data.pointer(:offset = start * type.size))
+  }
+  
+)
+
+SubString() @= String()
+
+SubString() &= {
+  # SubArray only works with the memory, it cannot allocate or free its own memory
+  free() = {}
+}
+

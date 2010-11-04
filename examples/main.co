@@ -1,0 +1,45 @@
+# comment
+main(args = :Array) = {
+  print_newline = false
+  args.each() do |arg|
+    if arg.index == 0 and arg.value == '-n'
+      print_newline = true
+    else
+      arg.item.print()
+      if arg.index < args.size - 1
+        " ".print()
+      end
+    end
+  end
+  
+  if print_newline
+    '\n'.print()
+  end
+}
+
+MyArray(size = UInt(0), type = :Type, data = nil) = {
+  data ||= Pointer(:size = size * type.size)
+  other = (1 + 2)
+  
+  each() = {
+    size.times() do |iterator|
+      index @= iterator.position
+      value = self.at(:index = index)
+      yield
+    end
+  }
+  
+  print() = {
+    if size > 4
+      return 0
+    else
+      return 1
+    end
+  }
+  
+  free() = {
+    data.free()
+  }
+}
+
+MyString(size = UInt(0), data = nil) @= MyArray(:type = Char)
