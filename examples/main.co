@@ -2,7 +2,7 @@
 main(args = :Array) = {
   print_newline = false
   args.each() do |arg|
-    if arg.index == 0 and arg.value == '-n'
+    if arg.index == 0 and arg.value == "-n"
       print_newline = true
     else
       arg.item.print()
