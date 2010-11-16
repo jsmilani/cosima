@@ -13,8 +13,6 @@ Parser(definition = :String) {
   }
 }
 
-:Parser.Capture
-
 
 Parser(<<LANGUAGE
 context=^\s*{{ref}}+\(\)\s*=\s*{\s*})

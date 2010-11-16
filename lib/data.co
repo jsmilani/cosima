@@ -20,31 +20,28 @@
 
 Data(source = Source(FileSystem), path = :String) < Source() {
   
-  open(path = :String) = {
+  open(path = :String) {
     Data(:source = self, :path = path)
   }
 }
 
 
-HTTP() @= Source()
-HTTP() &= {
+HTTP() << Source() {
   
 }
 
 
-FileSystem() @= Source()
-FileSystem() &= {
-  open(path = :String) = {
+FileSystem() << Source() {
+  open(path = :String) {
     
   }
   
-  exists?(path = :String) = {
+  exists?(path = :String) {
     
   }
 }
-FileSystem = FileSystem()
 
-Source() = {
+Source() {
   open(path = :String) = {
     
   }

@@ -17,31 +17,31 @@ String(size = UInt(0), data = nil) << Array(:size = size, :data = data, :type = 
       end
     end
     
-    before() = {
+    before() {
       return sub(:length = element.position - 1)
     }
     
-    after() = {
+    after() {
       return sub(:start = scanner.position, :length = size - scanner.position)
     }
   }
   
-  gsub(pattern = :string, replacement = :string) = {
+  gsub(pattern = :string, replacement = :string) {
     result = String()
     scan(pattern) do |scanner|
       result
     end
   }
   
-  split(delimitter = ' ') = {
+  split(delimitter = ' ') {
     
   }
   
-  hash() = {
+  hash() {
     return 
   }
   
-  print() = {
+  print() {
     len = size * type.size
     ASM(:i386) do
       push dword len            ; message length                           
@@ -58,7 +58,7 @@ String(size = UInt(0), data = nil) << Array(:size = size, :data = data, :type = 
     end
   }
   
-  sub(start = 0, length = size) = {
+  sub(start = 0, length = size) {
     # ? lenth > size - start
     return SubString(:size = length, :type = type, :data = data.pointer(:offset = start * type.size))
   }
