@@ -1,0 +1,25 @@
+Regex(pattern = :String) {
+  parser = Parser()
+  
+  match(string = :String) {
+    parser.match(:string = string)
+  }
+  
+  Parser(pattern = pattern) {
+    matchers = match_regex(patt)
+    
+    
+    match_regex() {
+      
+    }
+    
+    match_group() {
+      
+    }
+    
+    match_word() {
+      
+    }
+  }
+  
+}

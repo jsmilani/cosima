@@ -1,45 +1,43 @@
-# [1,2,3]
-# Array(:type = :int)
-# Array(:size = 100, :type = :float)
+# Array(size = UInt(0), data = nil, <type> = :Type) {}
 
-
-Array(size = UInt(0), type = :Type, data = nil) &= {
-  data ||= Pointer(:size = size * type.size)
+Array() &{
+  data ||= Pointer(:size = type.size * size)
   
   at(index = :UInt) = {
-    return type(data[index*type.size])
+    return type(data[index * type.size])
   }
   
-  set(index = :UInt, value = :&type) = {
-    data.set(:index = index*type.size, :value = value)
+  set(index = :UInt, value = :<type>) {
+    data.set(:index = index * type.size, :value = value)
   }
   
-  each(start = 0) = {
+  each(start = 0, size = size) {
     (size - start).times() do |iterator|
-      index = iterator.position + start
-      value = self.at(:index = index)
+      index @= iterator.position + start
+      value @= self.at(:index = index)
       yield
     end
   }
   
-  map(map_type = :Type) = {
-    array = Array(:type = type, :size = size)
+  map(map_type = :Type) {
+    array = Array(:size = size, :type = type)
     size.each() do |iterator|
       index @= iterator.index
-      array.at(:index = index) = yield
+      value @= at(:index = index)
+      yield
     end
     return array
   }
-  collect() @= map()
+  collect() @ map()
   
-  copy(start = 0, length = size) = {
+  copy(start = 0, length = size) {
     mem_size = length * type.size
     data_copy = Pointer(:size = mem_size)
     data.copy(:destination = data_copy, :size = mem_size, :offset = start * type.size)
     return Array(:size = length, :type = type, :data = data_copy)
   }
   
-  append(array = :Array) = {
+  append(array = :Array) {
     new_size = size + array.size
     mem_size = new_size * type.size
     new_data = Pointer(:size = mem_size)
@@ -51,12 +49,12 @@ Array(size = UInt(0), type = :Type, data = nil) &= {
     return self
   }
   
-  sub(start = 0, length = size) = {
+  sub(start = 0, length = size) {
     # ? lenth > size - start
     return SubArray(:size = length, :type = type, :data = data.pointer(:offset = start * type.size))
   }
   
-  reverse() = {
+  reverse() {
     (size / 2).times() do |iterator|
       swap_char = at(:index = iterator.position)
       swap_position = size - iterator.position
@@ -64,22 +62,17 @@ Array(size = UInt(0), type = :Type, data = nil) &= {
       set(:position = swap_position, :value = swap_char)
     end
   }
-  sort() = {
-    times() do |iterator|
-      a
-      yield
-    end
+  sort() {
+    
   }
   
-  free() = {
+  free() {
     data.free(:size = size)
   }
   
 }
 
 # SubArray does not manage its own memory. This forces all arguments to be required
-SubArray(size = :UInt, type = :Type, data = :Pointer) @= Array(:size = size, :type = type, :data = data)
-
-SubArray() &= {
+SubArray(size = :UInt, data = :Pointer, type = :Type) < Array(:size = size, :data = data, :type = type) {
   free() = {} # same as undef
 }

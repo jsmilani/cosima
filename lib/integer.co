@@ -1,5 +1,5 @@
-_integer() = {
-  times() = {
+_integer() {
+  times() {
     position = 0
     while position < self
       yield
@@ -7,59 +7,60 @@ _integer() = {
     end
   }
   
-  to_s() = {
-    string = ""
+  to_s() {
+    string = String(:size = 1) # start with one digit. How can this predict the number of digits?
     divmod = self.divmod(:divisor = 10)
-    while div > 0
-      string.append(:char = Char(48 + divmod.mod))
+    string.append(:char = Char(48 + divmod.mod))
+    while divmod.quotient > 0
       divmod = self.divmod(divmod.quotient)
+      string.append(:char = Char(48 + divmod.mod))
     end
     return string
   }
   
-  divmod(divisor = :Int) = {
+  divmod(divisor = :Int) {
     # assembly
     # modulo = 
     # quotient = 
   }
   
-  seconds() = {
+  seconds() {
     return Duration(:seconds = self)
   }
-  second() @= seconds()
+  second() @ seconds()
   
-  minutes() = {
+  minutes() {
     return Duration(:minutes = self)
   }
-  minute() @= minutes()
+  minute() @ minutes()
   
-  hours() = {
+  hours() {
     return Duration(:hours = self)
   }
-  hour() @= hours()
+  hour() @ hours()
   
-  days() @= {
+  days() {
     return Duration(:days = self)
   }
-  day() @= days()
+  day() @ days()
   
-  weeks() = {
+  weeks() {
     return Duration(:weeks = self)
   }
-  week() @= weeks()
+  week() @ weeks()
   
-  months() = {
+  months() {
     return Duration(:months = self)
   }
-  months() @= month()
+  months() @ month()
   
-  years() = {
+  years() {
     return Duration(:years = self)
   }
-  year() @= year()
+  year() @ years()
 }
 
-Int() &= _integer()
-UInt() &= _integer()
-Long() &= _integer()
-ULong() &= _integer()
+Int() <& _integer()
+UInt() <& _integer()
+Long() <& _integer()
+ULong() <& _integer()

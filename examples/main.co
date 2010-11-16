@@ -13,7 +13,7 @@ main(args = :Array) = {
   end
   
   if print_newline
-    '\n'.print()
+    "\n".print()
   end
 }
 

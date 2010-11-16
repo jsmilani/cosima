@@ -1,14 +1,14 @@
-Parser(definition = :String) = {
+Parser(definition = :String) {
   
   
   
   
-  Capture(string = :String) = {
+  Capture(string = :String) {
     
   }
 
   
-  parse(string = :String) = {
+  parse(string = :String) {
     return
   }
 }

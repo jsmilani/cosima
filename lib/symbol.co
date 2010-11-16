@@ -1,9 +1,0 @@
-symbol(name = :String) = {
-  hash = name.hash()
-  
-  to_s() = {
-    return name
-  }
-  
-}
-

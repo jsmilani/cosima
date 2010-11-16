@@ -1,6 +1,4 @@
-String(size = UInt(0), data = nil) @= Array(:size = size, :type = Char, :data = data)
-
-String() &= {
+String(size = UInt(0), data = nil) << Array(:size = size, :data = data, :type = Char) {
   scan(pattern = :string) = {
     matching = false
     pattern_position = 0
@@ -44,7 +42,20 @@ String() &= {
   }
   
   print() = {
+    len = size * type.size
+    ASM(:i386) do
+      push dword len            ; message length                           
+      push dword data           ; message to write
+      push dword 1              ; file descriptor value (stdout?)
     
+      ; 1b make the system call to write
+      mov eax, 0x4              ; system call number for write
+      sub esp, 4                ; OS X (and BSD) system calls needs "extra space" on stack
+      int 0x80                  ; make the actual system call
+    
+      ; 1c clean up the stack
+      add esp, 16
+    end
   }
   
   sub(start = 0, length = size) = {
@@ -54,10 +65,8 @@ String() &= {
   
 )
 
-SubString() @= String()
 
-SubString() &= {
-  # SubArray only works with the memory, it cannot allocate or free its own memory
-  free() = {}
+SubArray(size = :UInt, data = :Pointer, <type> = :Type) < Array(:size = size, :type = type, :type = <type>) {
+  free() = {} # same as undef
 }
 

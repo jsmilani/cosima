@@ -1,0 +1,125 @@
+Time(year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0, microsecond = 0, zone = Zone.UTC()) {
+  year = UInt(0)
+  
+  julian_date() {
+    y = year
+    m = month
+    if month <= 2
+      y -= 1
+      m += 12
+    end
+    a = (y / 100.0).floor
+    b = 2 - a + (a / 4.0).floor
+    jd = (365.25 * (y + 4716)).floor + (30.6001 * (m + 1)).floor + day + b - 1524
+    if julian?(jd, sg) # TODO: sg is a variable for JULIAN or GREGORIAN
+      jd -= b
+    end
+    jd
+  }
+  
+  add_time(duration = :Duration) {
+    # Adjust each component for real-world time
+    adjust_for_limits(:min = 0, :range = 1000, :value = microsecond + duration.microsecond) do |adjusted|
+      microsecond = adjusted.value
+      second += adjusted.carry
+    end
+    
+    adjust_for_limits(:min = 0, :range = 60, :value = second + duration.second) do |adjusted|
+      second = adjusted.value
+      minute += adjusted.carry
+    end
+    
+    # TODO: daylight savings time?
+    adjust_for_limits(:min = 0, :range = 60, :value = minute + duration.minute) do |adjusted|
+      minute = adjusted.value
+      hour += adjusted.carry
+    end
+    
+    adjust_for_limits(:min = 0, :range = 24, :value = hour + duration.hour) do |adjusted|
+      hour = adjusted.value
+      day += adjusted.carry
+    end
+    
+    # TODO: improve month accuracy
+    adjust_for_limits(:min = 1, :range = 30, :value = day + duration.day) do |adjusted|
+      day = adjusted.value
+      month += adjusted.carry
+    end
+    
+    adjust_for_limits(:min = 1, :range = 12, :value = month + month.day) do |adjusted|
+      month = adjusted.value
+      year += adjusted.carry
+    end
+    
+    year += duration.year
+    
+    adjust_for_limits(lower_bound = :Int, upper_bound = :Int, value = :Int) {
+      range = upper_bound - lower_bound + 1
+      carry = 0
+      if value > upper_bound
+        value.divmod(:divisor = range) do |divmod|
+          value = lower_bound + divmod.modulo
+          carry = divmod.quotient
+        end
+      elsif value < lower_bound
+        value.divmod(:divisor = 12) do |divmod|
+          month = divmod.mod
+          year += divmod.quotient
+        end
+      end
+    }
+  }
+  
+  
+  Time.now() {
+    # SYS_gettimeofday   116
+    unixtime = :Int
+    ASM(:i386) do
+      push unixtime             ; how do we retrieve the time?
+
+      ; 1b make the system call to write
+      mov eax, 0x74             ; system call number for write (SYS_gettimeofday = 116)
+      sub esp, 4                ; OS X (and BSD) system calls needs "extra space" on stack
+      int 0x80                  ; make the actual system call
+
+      ; 1c clean up the stack
+      add esp, 16
+    end
+  }
+
+  Time.at(seconds = :Int) {
+
+    # offset from Wed Dec 31 18:00:00 CST 1969
+    time = Time(:year = 1969, :month =  12, :day = 31, :hour = 18, :zone = Zone.CST())
+    time.add_time(:duration = Duration(:miliseconds = seconds))
+
+    return time
+  }
+}
+
+
+
+Duration(years = 0, months = 0, days = 0, hours = 0, minutes = 0, seconds = 0, microseconds = 0) {
+  
+}
+
+# NOTE: Not thought through very well.
+# TODO: This needs a real implementation
+
+Zone(name = :String, , offset = :Int) = {
+  
+  Zone.UTC() {
+    zone = Zone(:name = "UTC", :code = "UTC", :offset = 0)
+    return zone
+  }
+  
+  Zone.PST() {
+    zone = Zone(:name = "Pacific Standard Time", :code = "PST", :offset = 0)
+    return zone
+  }
+  
+  Zone.CST() {
+    zone = Zone(:name = "Central Standard Time", :code = "UTC", :offset = 0)
+    return zone
+  }
+}

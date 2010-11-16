@@ -1,0 +1,16 @@
+main(args = :Array) = {
+  
+  
+}
+
+Compiler() = {
+  cosima_definition = <<DEFINITION
+
+
+DEFINITION
+  parser = Parser(:definition = cosima_definition)
+  
+  parse(source = :String) = {
+    Parser
+  }
+}

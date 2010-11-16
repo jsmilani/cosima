@@ -1,3 +1,51 @@
-Data(source = :Data.Source, path = '/') = {
+# Ruby
+# contents = File.open("/Users/jsmilani/Documents/test.txt").read
+# 
+## or
+# 
+# Dir.chdir("/Users/jsmilani/Documents") do |document|
+#   contents = File.open(File.join(document,"test.txt")).read
+# end
+# 
+# Cosima
+# contents = Data(:path = "/Users/jsmilani/Documents/test.txt").read()
+#
+## or
+#
+# Data(:path = "/Users/jsmilani/Documents") do |documents|
+#   contents = documents.open(:path = "text.txt").read()
+# end
+# 
+
+
+Data(source = Source(FileSystem), path = :String) < Source() {
   
+  open(path = :String) = {
+    Data(:source = self, :path = path)
+  }
+}
+
+
+HTTP() @= Source()
+HTTP() &= {
+  
+}
+
+
+FileSystem() @= Source()
+FileSystem() &= {
+  open(path = :String) = {
+    
+  }
+  
+  exists?(path = :String) = {
+    
+  }
+}
+FileSystem = FileSystem()
+
+Source() = {
+  open(path = :String) = {
+    
+  }
 }

@@ -7,24 +7,24 @@
 
 # Pointer(size = 0) - allocates an array of memory
 
-Pointer &= {
-  free() = {
+Pointer() {
+  free() {
     # assembly
   }
   
-  at(index = :UInt) = {
+  at(index = :UInt) {
     
   }
   
-  set(index = :UInt, value = 0) = {
+  set(index = :UInt, value = 0) {
     # assembly
   }
   
-  copy(destination = :Pointer, size = :UInt, offset = 0) = {
+  copy(destination = :Pointer, size = :UInt, offset = 0) {
     # assembly
   }
   
-  pointer(offset = 0) = {
+  pointer(offset = 0) {
     # assembly
   }
 }
